@@ -1,0 +1,16 @@
+[Unit]
+Description=Remote PipeWire Volume Control API
+
+[Service]
+Environment="NODE_VERSION=v18.20.2"
+ExecStart=/home/owen/.nvm/nvm-exec npm run start
+WorkingDirectory=/home/owen/src/remote-wire
+RestartSec=10
+Restart=always
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=nodejs-remote-wire
+
+[Install]
+WantedBy=multi-user.target
