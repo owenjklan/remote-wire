@@ -1,12 +1,13 @@
 var express = require('express');
 var pipewire = require('../pipewire-cli')
-const {getSinkDevices, getDeviceVolume, setDeviceVolume} = require("../pipewire-cli");
+const {getSinkDevices, getDeviceVolume, setDeviceVolume, getActiveDevice} = require("../pipewire-cli");
+const {hostname} = require("node:os");
 var router = express.Router();
 
 
 // API module to interface to PipeWire outputs and operations
 router.get('/', function (req, res, next) {
-    res.send("Hello World!");
+    res.send({"hostname": hostname()});
 });
 
 router.get('/devices', function (req, res, next) {
@@ -15,9 +16,20 @@ router.get('/devices', function (req, res, next) {
             res.send(result);
         },
         (error) => {
-            res.send(error)
+            res.status(error.status).send(error.body);
         }
     );
+})
+
+router.get('/activeDevice', function (req, res, next) {
+    getActiveDevice().then(
+        (result) => {
+            res.send(result);
+        },
+        (error) => {
+            res.status(error.status).send(error.body);
+        }
+    )
 })
 
 router.get('/volume/:deviceId', function (req, res, next) {
@@ -26,7 +38,7 @@ router.get('/volume/:deviceId', function (req, res, next) {
             res.send(result);
         },
         (error) => {
-            res.send(error);
+            res.status(error.status).send(error.body);
         }
     )
 })
