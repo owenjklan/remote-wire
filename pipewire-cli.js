@@ -66,7 +66,6 @@ function setDeviceVolume(deviceId, volumePercentage) {
             reject({"status": 400, "body": {"error": `Invalid volume percentage: ${volumePercentage}`}});
             return;  // To ensure the success code doesn't run in the failure case.
         }
-
         const paCtlProc = spawn('/usr/bin/pactl', ['set-sink-volume', deviceId.toString(), `${volumePercentage}%`]);
         let failed = false;
         let pwCliOutput = '';
@@ -144,8 +143,8 @@ function getActiveDevice() {
                             "name": deviceInfo[i].name,
                             "description": deviceInfo[i].description,
                             "volume": {
-                                "left": deviceInfo[i].volume["front-left"].value_percent,
-                                "right": deviceInfo[i].volume["front-right"].value_percent
+                                "left": deviceInfo[i].volume["front-left"].value_percent.split("%")[0],
+                                "right": deviceInfo[i].volume["front-right"].value_percent.split("%s")[0]
                             }
                         });
                         return;

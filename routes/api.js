@@ -45,6 +45,7 @@ router.get('/volume/:deviceId', function (req, res, next) {
 
 router.post('/volume/:deviceId', function (req, res, next) {
     const settingsPayload = req.body;
+    console.log("Received: ", req.body);
     setDeviceVolume(req.params.deviceId, settingsPayload.volume).then(
         (result) => {
             res.send(result);
