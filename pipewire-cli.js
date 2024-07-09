@@ -148,7 +148,15 @@ function getActiveDevice() {
                     return;
                 }
                 // Now, let's process the JSON and find the device that matches the name in paCliOutput
-                const deviceInfo = JSON.parse(paSinkInfo);
+                let deviceInfo = "{}";
+                try {
+                    deviceInfo = JSON.parse(paSinkInfo);
+                } catch (error) {
+                    console.error("Failed parsing JSON response from pactl command!")
+                    console.error(error);
+                    reject({"status": 500, "body": error});
+                    return;
+                }
                 for (let i = 0; i < deviceInfo.length; i++) {
                     if (deviceInfo[i].name === activeDeviceName) {
                         resolve({
