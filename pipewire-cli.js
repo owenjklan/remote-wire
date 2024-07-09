@@ -66,7 +66,20 @@ function setDeviceVolume(deviceId, volumePercentage) {
             reject({"status": 400, "body": {"error": `Invalid volume percentage: ${volumePercentage}`}});
             return;  // To ensure the success code doesn't run in the failure case.
         }
-        const paCtlProc = spawn('/usr/bin/pactl', ['set-sink-volume', deviceId.toString(), `${volumePercentage}%`]);
+
+        // It's been observed that values under 100, but with a decimal
+        // point will set the volume to WAYYYY over 100% when supplied
+        // to pactl. As such, split on any decimal point and only take
+        // the integer component.
+        let volumeString = ""
+        try {
+            volumeString = volumePercentage.toString().split(".")[0];
+        } catch (err) {
+            reject({"status": 400, "body": `Invalid volume percentage: ${volumePercentage}`});
+            return;
+        }
+
+        const paCtlProc = spawn('/usr/bin/pactl', ['set-sink-volume', deviceId.toString(), `${volumeString}%`]);
         let failed = false;
         let pwCliOutput = '';
 
