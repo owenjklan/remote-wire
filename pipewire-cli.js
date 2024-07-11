@@ -102,6 +102,31 @@ function setDeviceVolume(deviceId, volumePercentage) {
     })
 }
 
+function setDeviceMuteState(deviceId, muteFlag) {
+    return new Promise((resolve, reject) => {
+        const paCtlProc = spawn('/usr/bin/pactl', ['set-sink-mute', deviceId.toString(), `${muteFlag ? 1 : 0}`]);
+        let failed = false;
+        let pwCliOutput = '';
+
+        paCtlProc.on('error', () => {
+            failed = true;
+        })
+
+        paCtlProc.stdout.on('data', (data) => {
+            pwCliOutput += data;
+        });
+
+        paCtlProc.stdout.on('close', (code) => {
+            if (failed) {
+                reject({"status": 500, "body": {"error": "Failed to set device mute state!"}})
+                return;
+            } else {
+                resolve({"success": true});
+            }
+        })
+    })
+}
+
 function getActiveDevice() {
     return new Promise((resolve, reject) => {
         const paCtlProc = spawn('/usr/bin/pactl', ['get-default-sink']);
@@ -185,4 +210,5 @@ exports.getSinkDevices = getSinkDevices;
 exports.getDeviceVolume = getDeviceVolume;
 exports.setDeviceVolume = setDeviceVolume;
 exports.getActiveDevice = getActiveDevice;
+exports.setDeviceMuteState = setDeviceMuteState;
 // exports.sinkDevices = sinkDevices;

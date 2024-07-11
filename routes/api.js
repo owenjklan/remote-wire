@@ -1,6 +1,6 @@
 var express = require('express');
 var pipewire = require('../pipewire-cli')
-const {getSinkDevices, getDeviceVolume, setDeviceVolume, getActiveDevice} = require("../pipewire-cli");
+const {getSinkDevices, getDeviceVolume, setDeviceVolume, setDeviceMuteState, getActiveDevice} = require("../pipewire-cli");
 const {hostname} = require("node:os");
 var router = express.Router();
 
@@ -47,6 +47,18 @@ router.post('/volume/:deviceId', function (req, res, next) {
     const settingsPayload = req.body;
     console.log("Received: ", req.body);
     setDeviceVolume(req.params.deviceId, settingsPayload.volume).then(
+        (result) => {
+            res.send(result);
+        },
+        (error) => {
+            res.status(error.status).send(error.body);
+        }
+    )
+})
+
+router.post('/mute/:deviceId', function (req, res, next) {
+    const settingsPayload = req.body;
+    setDeviceMuteState(req.params.deviceId, settingsPayload.mute).then(
         (result) => {
             res.send(result);
         },
