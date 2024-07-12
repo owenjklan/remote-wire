@@ -188,6 +188,7 @@ function getActiveDevice() {
                             "id": deviceInfo[i].index,
                             "name": deviceInfo[i].name,
                             "description": deviceInfo[i].description,
+                            "mute": deviceInfo[i].mute,
                             "volume": {
                                 "left": deviceInfo[i].volume["front-left"].value_percent.split("%")[0],
                                 "right": deviceInfo[i].volume["front-right"].value_percent.split("%s")[0]
