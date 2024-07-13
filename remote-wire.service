@@ -2,8 +2,12 @@
 Description=Remote PipeWire Volume Control API
 
 [Service]
+# The following are not required but useful for clients
+# receiving multicast notifications sent from the Node server
+# Environment="REMOTE_WIRE_HOST_DESCRIPTION=your host description"
+# Environment="REMOTE_WIRE_HOST_PORT=65500"  # 65500 is the default port. It will be treated as a string
+
 Environment="NODE_VERSION=v18.20.2"
-#ExecStart=/bin/bash -c '${NPM_PATH} run start'
 ExecStart=/usr/bin/node ./bin/www
 WorkingDirectory=/home/owen/src/remote-wire
 RestartSec=10
