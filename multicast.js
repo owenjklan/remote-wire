@@ -23,7 +23,7 @@ const startMulticastBroadcast = () =>{
             JSON.stringify({
                 hostname: hostname(),
                 description: process.env.REMOTE_WIRE_HOST_DESCRIPTION,
-                port: process.env.REMOTE_WIRE_HOST_PORT
+                port: process.env.REMOTE_WIRE_HOST_PORT ? process.env.REMOTE_WIRE_HOST_PORT : "65500",
             })
         );
         server.send(message, 0, message.length, PORT, MULTICAST_ADDR);
