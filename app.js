@@ -5,6 +5,7 @@ var logger = require('morgan');
 
 // var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
+const multicast = require("./multicast");
 
 var app = express();
 
@@ -16,5 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //
 // app.use('/', indexRouter);
 app.use('/api', apiRouter);
+
+multicast.startMulticastBroadcast();
 
 module.exports = app;
