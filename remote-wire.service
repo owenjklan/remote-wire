@@ -13,9 +13,11 @@ WorkingDirectory=/home/owen/src/remote-wire
 RestartSec=10
 Restart=always
 
-#StandardOutput=syslog
-#StandardError=syslog
 SyslogIdentifier=nodejs-remote-wire
 
 [Install]
-WantedBy=multi-user.target
+# The following default.target assumes the service is used with
+# systemctl --user.
+# See the linked Stack Exchange answer for more detail:
+# https://unix.stackexchange.com/a/666515
+WantedBy=default.target
