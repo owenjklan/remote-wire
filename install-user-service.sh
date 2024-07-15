@@ -26,11 +26,12 @@ fi
 echo
 echo -e "\033[32;1m ✓✓ ${SERVICE_FILE} has been installed and enabled to start at user login ✓✓\033[0m"
 echo
-echo -e "To inspect the service logs, run: These can be edited by running: \033[33;1mjournalctl --user -u ${SERVICE_FILE}\033[0m."
+echo -e "To inspect the service logs, run: \033[33;1mjournalctl --user -u ${SERVICE_FILE}\033[0m."
 echo
 echo "There are some environment variables that can be edited to adjust behaviour."
 echo
 echo -e "These can be edited by running: \033[33;1msystemctl --user edit ${SERVICE_FILE}\033[0m."
+echo    "(Be sure the Environment= directives are within an [Service] section, or it won't start!)"
 echo -e "\033[1mREMOTE_WIRE_HOST_PORT\033[0m \t\tThis is optional. HTTP port used. 65500 will be used if not provided."
 echo -e "\033[1mREMOTE_WIRE_HOST_DESCRIPTION\033[0m \tThis is optional. Description of host provided in multicast announcements."
 echo
